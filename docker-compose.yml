@@ -1,0 +1,11 @@
+services:
+  node-app:
+    build: .
+    container_name: asana-automated-ticket-numbering
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: node update_tickets.js

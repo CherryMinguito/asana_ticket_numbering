@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <div class="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
+      <div class="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h1 class="text-xl font-semibold tracking-tight">Sign in</h1>
+            <p class="mt-1 text-sm text-slate-600">Use your email and password.</p>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-4">
+          <label class="block">
+            <div class="text-sm font-medium text-slate-700">Email</div>
+            <input id="email" type="email" autocomplete="email" placeholder="you@company.com"
+              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+          </label>
+
+          <label class="block">
+            <div class="text-sm font-medium text-slate-700">Password</div>
+            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••"
+              class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+          </label>
+
+          <button id="loginBtn"
+            class="mt-2 inline-flex w-full items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-200">
+            Sign in
+          </button>
+
+          <div id="msg" class="text-sm text-slate-700"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const setMsg = (t, tone = "neutral") => {
+        const el = $("msg");
+        el.textContent = t || "";
+        el.className = "text-sm " + (tone === "error" ? "text-red-700" : "text-slate-700");
+      };
+
+      async function login() {
+        setMsg("");
+        const email = $("email").value;
+        const password = $("password").value;
+
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return setMsg(data.error || "Login failed", "error");
+        window.location.href = "/";
+      }
+
+      $("loginBtn").addEventListener("click", login);
+      $("password").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") login();
+      });
+      $("email").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") login();
+      });
+    </script>
+  </body>
+</html>
+

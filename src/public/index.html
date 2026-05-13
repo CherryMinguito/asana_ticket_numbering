@@ -1,0 +1,408 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-900">
+    <div class="min-h-screen">
+      <div class="flex min-h-screen">
+        <aside class="w-64 border-r border-slate-200 bg-white">
+          <div class="px-5 py-5">
+            <div class="text-sm font-semibold text-slate-900">Asana Ticketing</div>
+            <div class="mt-0.5 text-xs text-slate-500">Admin</div>
+          </div>
+
+          <nav class="px-3 py-2">
+            <a href="#projects" data-route="projects"
+              class="nav-item flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <span class="h-2 w-2 rounded-full bg-slate-300"></span>
+              Projects
+            </a>
+            <a href="#users" data-route="users"
+              class="nav-item mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <span class="h-2 w-2 rounded-full bg-slate-300"></span>
+              Users
+            </a>
+            <a href="#settings" data-route="settings"
+              class="nav-item mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              <span class="h-2 w-2 rounded-full bg-slate-300"></span>
+              Settings
+            </a>
+          </nav>
+
+          <div class="mt-auto px-5 py-5">
+            <button id="logoutBtn"
+              class="inline-flex w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">
+              Logout
+            </button>
+          </div>
+        </aside>
+
+        <main class="flex-1">
+          <div class="mx-auto max-w-6xl px-6 py-10">
+            <header class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 id="pageTitle" class="text-2xl font-semibold tracking-tight">Projects</h1>
+                <p id="pageSubtitle" class="mt-1 text-sm text-slate-600">Add a project or click a row to edit, then update.</p>
+              </div>
+              <div id="projectsTip" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
+                <div class="font-medium text-slate-800">Tip</div>
+                Initials can be blank to auto-generate.
+              </div>
+            </header>
+
+            <section id="view-projects" class="mt-6">
+              <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+                  <label class="block">
+                    <div class="text-sm font-medium text-slate-700">Asana Project ID</div>
+                    <input id="id" placeholder="1234567890"
+                      class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  </label>
+                  <label class="block">
+                    <div class="text-sm font-medium text-slate-700">Project Name</div>
+                    <input id="name" placeholder="Blendit Automation"
+                      class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  </label>
+                  <label class="block">
+                    <div class="text-sm font-medium text-slate-700">Ticket Initials (optional)</div>
+                    <input id="initials" placeholder="BA-"
+                      class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  </label>
+                  <label class="block">
+                    <div class="text-sm font-medium text-slate-700">Last # (optional)</div>
+                    <input id="lastNumber" inputmode="numeric" placeholder="0"
+                      class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                  </label>
+                </div>
+
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                  <button id="addBtn"
+                    class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                    Add
+                  </button>
+                  <button id="updateBtn"
+                    class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                    Update
+                  </button>
+                  <button id="clearBtn"
+                    class="ml-auto inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                    Clear
+                  </button>
+                  <span class="text-sm text-slate-700" id="msg"></span>
+                </div>
+              </div>
+
+              <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
+                  <div class="text-sm font-medium text-slate-800">Projects</div>
+                  <button id="refreshBtn"
+                    class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                    Refresh
+                  </button>
+                </div>
+                <div class="overflow-x-auto">
+                  <table id="tbl" class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                      <tr>
+                        <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">ID</th>
+                        <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Name</th>
+                        <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Initials</th>
+                        <th scope="col" class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600">Last #</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section id="view-users" class="mt-6 hidden">
+              <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div class="text-sm font-medium text-slate-900">Add user</div>
+                  <p class="mt-1 text-sm text-slate-600">Create a login for this UI.</p>
+
+                  <div class="mt-4 space-y-4">
+                    <label class="block">
+                      <div class="text-sm font-medium text-slate-700">Email</div>
+                      <input id="newUserEmail" type="email" placeholder="user@example.com"
+                        class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                    </label>
+                    <label class="block">
+                      <div class="text-sm font-medium text-slate-700">Password</div>
+                      <input id="newUserPassword" type="password" placeholder="••••••••"
+                        class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200" />
+                    </label>
+
+                    <div class="flex items-center gap-2">
+                      <button id="addUserBtn"
+                        class="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                        Add user
+                      </button>
+                      <span id="usersMsg" class="text-sm text-slate-700"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-3">
+                    <div class="text-sm font-medium text-slate-800">Users</div>
+                    <button id="refreshUsersBtn"
+                      class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                      Refresh
+                    </button>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                      <thead class="bg-slate-50">
+                        <tr>
+                          <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Email</th>
+                          <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Created</th>
+                          <th scope="col" class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-600">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="usersTbody" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="view-settings" class="mt-6 hidden">
+              <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="text-sm font-medium text-slate-900">Settings</div>
+                <p class="mt-1 text-sm text-slate-600">Placeholder.</p>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const msg = (t, tone = "neutral") => {
+        const el = $("msg");
+        el.textContent = t || "";
+        el.className = "text-sm " + (tone === "error"
+          ? "text-red-700"
+          : tone === "success"
+            ? "text-emerald-700"
+            : "text-slate-700");
+      };
+
+      const usersMsg = (t, tone = "neutral") => {
+        const el = $("usersMsg");
+        if (!el) return;
+        el.textContent = t || "";
+        el.className = "text-sm " + (tone === "error"
+          ? "text-red-700"
+          : tone === "success"
+            ? "text-emerald-700"
+            : "text-slate-700");
+      };
+
+      function setActiveRoute(route) {
+        const routes = ["projects", "users", "settings"];
+        const selected = routes.includes(route) ? route : "projects";
+
+        const title = $("pageTitle");
+        const subtitle = $("pageSubtitle");
+        const tip = $("projectsTip");
+
+        const viewProjects = $("view-projects");
+        const viewUsers = $("view-users");
+        const viewSettings = $("view-settings");
+
+        for (const el of document.querySelectorAll(".nav-item")) {
+          const isActive = el.getAttribute("data-route") === selected;
+          el.className =
+            "nav-item flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition " +
+            (isActive
+              ? "bg-slate-900 text-white"
+              : "text-slate-700 hover:bg-slate-50");
+          const dot = el.querySelector("span");
+          if (dot) dot.className = "h-2 w-2 rounded-full " + (isActive ? "bg-white/80" : "bg-slate-300");
+        }
+
+        viewProjects.classList.toggle("hidden", selected !== "projects");
+        viewUsers.classList.toggle("hidden", selected !== "users");
+        viewSettings.classList.toggle("hidden", selected !== "settings");
+
+        if (selected === "projects") {
+          title.textContent = "Projects";
+          subtitle.textContent = "Add a project or click a row to edit, then update.";
+          tip.classList.remove("hidden");
+          loadProjects();
+        } else if (selected === "users") {
+          title.textContent = "Users";
+          subtitle.textContent = "Manage access to this UI.";
+          tip.classList.add("hidden");
+          loadUsers();
+        } else {
+          title.textContent = "Settings";
+          subtitle.textContent = "Configure app behavior.";
+          tip.classList.add("hidden");
+        }
+      }
+
+      function routeFromHash() {
+        const h = (window.location.hash || "#projects").replace("#", "");
+        return h || "projects";
+      }
+
+      async function loadUsers() {
+        usersMsg("");
+        const res = await fetch("/api/users");
+        const data = await res.json().catch(() => ([]));
+        if (!res.ok) return usersMsg(data.error || "Failed to load users", "error");
+
+        const tbody = $("usersTbody");
+        tbody.innerHTML = "";
+        for (const u of data) {
+          const tr = document.createElement("tr");
+          const emailEsc = String(u.email || "");
+          tr.innerHTML = `
+            <td class="whitespace-nowrap px-5 py-3 text-sm font-medium text-slate-900">${u.email}</td>
+            <td class="whitespace-nowrap px-5 py-3 text-sm text-slate-700">${u.createdAt ? new Date(u.createdAt).toLocaleString() : "—"}</td>
+            <td class="whitespace-nowrap px-5 py-3 text-right">
+              <button data-del-user="${emailEsc}"
+                class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">
+                Delete
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        }
+
+        for (const btn of tbody.querySelectorAll("button[data-del-user]")) {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const email = btn.getAttribute("data-del-user");
+            if (!email) return;
+            const ok = confirm(`Delete user ${email}?`);
+            if (!ok) return;
+
+            usersMsg("");
+            const res = await fetch(`/api/users/${encodeURIComponent(email)}`, { method: "DELETE" });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) return usersMsg(data.error || "Failed to delete user", "error");
+            usersMsg("User deleted.", "success");
+            await loadUsers();
+          });
+        }
+      }
+
+      async function loadProjects() {
+        msg("");
+        const res = await fetch("/api/projects");
+        const projects = await res.json();
+        const tbody = $("tbl").querySelector("tbody");
+        tbody.innerHTML = "";
+        for (const p of projects) {
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-slate-50 cursor-pointer";
+          const lastNumber = (p.lastNumber ?? "") === "" ? "—" : String(p.lastNumber);
+          tr.innerHTML = `
+            <td class="whitespace-nowrap px-5 py-3 text-sm font-medium text-slate-900">${p.id}</td>
+            <td class="px-5 py-3 text-sm text-slate-700">${p.name}</td>
+            <td class="whitespace-nowrap px-5 py-3 text-sm text-slate-700">${p.initials}</td>
+            <td class="whitespace-nowrap px-5 py-3 text-right text-sm text-slate-700 tabular-nums">${lastNumber}</td>
+          `;
+          tr.addEventListener("click", () => {
+            $("id").value = p.id;
+            $("name").value = p.name;
+            $("initials").value = p.initials;
+            $("lastNumber").value = (p.lastNumber ?? "") === "" ? "" : String(p.lastNumber);
+            msg("Loaded. Edit fields and click Update.", "neutral");
+          });
+          tbody.appendChild(tr);
+        }
+      }
+
+      $("addBtn").addEventListener("click", async () => {
+        msg("");
+        const body = {
+          id: $("id").value,
+          name: $("name").value,
+          initials: $("initials").value,
+          lastNumber: $("lastNumber").value,
+        };
+        const res = await fetch("/api/projects", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return msg(data.error || "Failed to add", "error");
+        msg("Added.", "success");
+        await loadProjects();
+      });
+
+      $("updateBtn").addEventListener("click", async () => {
+        msg("");
+        const id = $("id").value.trim();
+        if (!id) return msg("ID required to update.", "error");
+        const body = {
+          name: $("name").value,
+          initials: $("initials").value,
+          lastNumber: $("lastNumber").value,
+        };
+        const res = await fetch(`/api/projects/${encodeURIComponent(id)}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return msg(data.error || "Failed to update", "error");
+        msg("Updated.", "success");
+        await loadProjects();
+      });
+
+      $("refreshBtn").addEventListener("click", loadProjects);
+
+      $("logoutBtn")?.addEventListener("click", async () => {
+        msg("");
+        await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+        window.location.href = "/login";
+      });
+
+      $("refreshUsersBtn")?.addEventListener("click", loadUsers);
+
+      $("addUserBtn")?.addEventListener("click", async () => {
+        usersMsg("");
+        const email = $("newUserEmail").value;
+        const password = $("newUserPassword").value;
+
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return usersMsg(data.error || "Failed to add user", "error");
+        usersMsg("User added.", "success");
+        $("newUserEmail").value = "";
+        $("newUserPassword").value = "";
+        await loadUsers();
+      });
+
+      $("clearBtn").addEventListener("click", () => {
+        $("id").value = "";
+        $("name").value = "";
+        $("initials").value = "";
+        $("lastNumber").value = "";
+        msg("");
+      });
+
+      window.addEventListener("hashchange", () => setActiveRoute(routeFromHash()));
+      setActiveRoute(routeFromHash());
+    </script>
+  </body>
+</html>
+
